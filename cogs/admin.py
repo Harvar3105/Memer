@@ -11,5 +11,10 @@ class AdminCog(commands.Cog):
     await ctx.send("Shutting down.")
     await self.bot.close()
 
+  @commands.command(name="scan_r2")
+  @is_admin
+  async def scan_r2(self, ctx: commands.Context):
+    
+
 async def setup(bot):
   await bot.add_cog(AdminCog(bot))

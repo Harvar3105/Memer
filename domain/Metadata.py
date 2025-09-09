@@ -1,0 +1,46 @@
+from dataclasses import dataclass, field
+from datetime import datetime
+from enum import Enum
+from typing import List
+import uuid
+
+
+class Tag(Enum):
+  FRIENDLY = "friendly",
+  OFFENSIVE = "offensive",
+  SILLY = "silly",
+  WAREDIT = "waredit"
+
+
+@dataclass
+class Metadata:
+  id: str = field(default_factory=lambda: str(uuid.uuid4()))
+  url: str = ""
+  name: str = ""
+  created_at: datetime = field(default_factory=datetime.now(datetime.timezone.utc))
+  updated_at: datetime = field(default_factory=datetime.now(datetime.timezone.utc))
+  tags: List[Tag] = field(default_factory=list)
+
+  def update_url(self, new_url: str):
+    self.url = new_url
+    self.updated_at = datetime.now(datetime.timezone.utc)
+
+  def add_tag(self, tag: Tag):
+    if tag not in self.tags:
+      self.tags.append(tag)
+      self.updated_at = datetime.now(datetime.timezone.utc)
+
+  def remove_tag(self, tag: Tag):
+    if tag in self.tags:
+      self.tags.remove(tag)
+      self.updated_at = datetime.now(datetime.timezone.utc)
+
+
+# Update these classes in future. For now only Video content is present
+# @dataclass
+# class Photo(Metadata):
+  
+
+# @dataclass
+# class Video(Metadata):
+  

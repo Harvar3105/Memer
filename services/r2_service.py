@@ -9,10 +9,10 @@ s3 = session.client(
     endpoint_url=os.getenv("R2_ENDPOINT")
 )
 
-def list_files(bucket_name):
-    response = s3.list_objects_v2(Bucket=os.getenv("R2_BUCKET"))
+async def list_files():
+    response = await s3.list_objects_v2(Bucket=os.getenv("R2_BUCKET"))
     return [obj['Key'] for obj in response.get('Contents', [])]
 
-def get_file_url(bucket_name, key):
-    return f"{os.getenv("R2_ENDPOINT")}/{bucket_name}/{key}"
+def get_file_url(file_name):
+    return f"{os.getenv("R2_ENDPOINT")}/{os.getenv("R2_BUCKET")}/{file_name}"
 
