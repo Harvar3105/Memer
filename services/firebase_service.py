@@ -10,6 +10,8 @@ firebase_admin.initialize_app(cred)
 
 db = firestore.client()
 
+db_name = "video_memes"
+
 # def save_user(uid, data):
 #     db.collection("users").document(uid).set(data)
 
@@ -17,10 +19,13 @@ db = firestore.client()
 #     doc = db.collection("users").document(uid).get()
 #     return doc.to_dict() if doc.exists else None
 
+async def exists(key:str):
+  return await db.collection(db_name).document(key).exists()
+
 async def save_video_metadata(video: Metadata):
-  success = await db.collection("video_memes").document(video.key).set(video)
+  success = await db.collection(db_name).document(video.key).set(video)
   return success
 
 async def get_video_metadata(key: str):
-  doc = db.collection("video_memes").document(key).get()
+  doc = db.collection(db_name).document(key).get()
   return doc.to_dict() if doc.exists else None

@@ -3,6 +3,9 @@ from discord.ext import commands
 import asyncio
 import os
 from dotenv import load_dotenv
+from services.r2_service import list_files, get_file_url
+from services.firebase_service import save_video_metadata, get_video_metadata, exists
+from domain.Metadata import Metadata, Tag
 
 load_dotenv()
 TOKEN = os.getenv("DISCORD_BOT_TOKEN")
@@ -16,7 +19,17 @@ bot = commands.Bot(command_prefix=PREFIX, intents=intents)
 @bot.event
 async def on_ready():
   await bot.tree.sync();
-  print(f"[✅] Logged in as {bot.user}")
+  print(f"[✅] Logged in as {bot.user}\nStarting db analysis and sync")
+
+  memes = lambda meme: get_file_url(meme), list_files()
+
+  for meme in memes:
+    if not exists(meme):
+        await save_video_metadata(Metadata(key=meme, tags=[Tag.UNTAGGED]))
+        print(f"[✔] Detected a new meme\nURL: {meme}\n")
+
+  print("🎉Sync completed!")
+  
 
 async def main():
     async with bot:

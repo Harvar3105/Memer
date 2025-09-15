@@ -9,12 +9,12 @@ class Tag(Enum):
   OFFENSIVE = "offensive",
   SILLY = "silly",
   WAREDIT = "waredit"
+  UNTAGGED = "untagged"
 
 
 @dataclass
 class Metadata:
   key: str = ""
-  url: str = ""
   created_at: datetime = field(default_factory=datetime.now(datetime.timezone.utc))
   updated_at: datetime = field(default_factory=datetime.now(datetime.timezone.utc))
   tags: List[Tag] = field(default_factory=list)
