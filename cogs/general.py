@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 import random
-import os
+from services.r2_service import list_files, get_file_url
 
 class GeneralCog(commands.Cog):
   MEMES_FOLDER = ""
@@ -32,14 +32,16 @@ class GeneralCog(commands.Cog):
 
   @commands.command(name="r_meme")
   async def meme(self, ctx: commands.Context):
-    files = os.listdir(self.MEMES_FOLDER)
-    if not files:
+    memes = []
+    for key in await list_files():
+      memes.append(get_file_url(key))
+
+    if not memes or memes.count == 0:
       await ctx.send("No memes available 😢")
       return
 
-    file = random.choice(files)
-    filepath = os.path.join(self.MEMES_FOLDER, file)
-    await ctx.send(file=discord.File(filepath))
+    meme = random.choice(memes)
+    await ctx.send(meme)
 
 async def setup(bot):
   await bot.add_cog(GeneralCog(bot))

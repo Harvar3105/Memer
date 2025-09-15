@@ -17,10 +17,10 @@ db = firestore.client()
 #     doc = db.collection("users").document(uid).get()
 #     return doc.to_dict() if doc.exists else None
 
-async def save_video_metadata(video: Video):
-  success = await db.collection("video_memes").document(video.id).set(video)
+async def save_video_metadata(video: Metadata):
+  success = await db.collection("video_memes").document(video.key).set(video)
   return success
 
-async def get_video_metadata(id):
-  doc = db.collection("video_memes").document(id).get()
+async def get_video_metadata(key: str):
+  doc = db.collection("video_memes").document(key).get()
   return doc.to_dict() if doc.exists else None

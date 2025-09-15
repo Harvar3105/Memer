@@ -2,7 +2,6 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
 from typing import List
-import uuid
 
 
 class Tag(Enum):
@@ -14,9 +13,8 @@ class Tag(Enum):
 
 @dataclass
 class Metadata:
-  id: str = field(default_factory=lambda: str(uuid.uuid4()))
+  key: str = ""
   url: str = ""
-  name: str = ""
   created_at: datetime = field(default_factory=datetime.now(datetime.timezone.utc))
   updated_at: datetime = field(default_factory=datetime.now(datetime.timezone.utc))
   tags: List[Tag] = field(default_factory=list)
