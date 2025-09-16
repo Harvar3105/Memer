@@ -28,4 +28,5 @@ async def save_video_metadata(video: Metadata):
 
 async def get_video_metadata(key: str):
   doc = db.collection(db_name).document(key).get()
+  # Somehow cast to object
   return doc.to_dict() if doc.exists else None
