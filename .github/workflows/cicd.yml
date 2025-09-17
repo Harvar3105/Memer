@@ -1,0 +1,14 @@
+name: CI/CD Pipeline
+
+on: [push]
+
+jobs:
+  placeholder-job:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Placeholder step
+        run: echo "This is a placeholder job. At the moment there's no deplys and no hosts. This job is used no dismiss error 'No job were run!'"
