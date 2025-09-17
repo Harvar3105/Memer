@@ -2,7 +2,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 import os
 import uuid
-from domain.Metadata import Metadata, Photo, Video
+from domain.Metadata import Metadata
 
 cred_path = os.getenv("./firebaseKey.json")
 cred = credentials.Certificate(cred_path)
