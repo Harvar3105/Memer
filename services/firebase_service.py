@@ -1,11 +1,8 @@
 import firebase_admin
 from firebase_admin import credentials, firestore
-import os
-import uuid
 from domain.Metadata import Metadata
 
-cred_path = os.getenv("./firebaseKey.json")
-cred = credentials.Certificate(cred_path)
+cred = credentials.Certificate("./firebaseKey.json")
 firebase_admin.initialize_app(cred)
 
 db = firestore.client()
@@ -26,7 +23,10 @@ async def save_video_metadata(video: Metadata):
   success = await db.collection(db_name).document(video.key).set(video)
   return success
 
-async def get_video_metadata(key: str):
+async def get_video_metadata(key: str) -> Metadata:
   doc = db.collection(db_name).document(key).get()
-  # Somehow cast to object
-  return doc.to_dict() if doc.exists else None
+
+  if doc.exists :
+    return Metadata.from_dict(doc.to_dict())
+  else:
+    return None

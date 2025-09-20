@@ -1,5 +1,5 @@
 from discord.ext import commands
-from config import ADMIN_IDS
+from utils.config import ADMIN_IDS
 
 def is_admin():
   async def predicate(ctx: commands.Context):
