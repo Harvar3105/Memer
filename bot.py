@@ -25,10 +25,10 @@ async def on_ready():
   print(f"Listed files {memes}")
 
   for meme in memes:
-    url = get_file_url(meme)
-    if not await exists(url):
-        await save_video_metadata(Metadata(key=url, tags=[Tag.UNTAGGED]))
-        print(f"[✔] Detected a new meme\nURL: {url}\n")
+    print(f"Meme: {meme}")
+    if not await exists(meme.url):
+        # await save_video_metadata(Metadata(key=meme.url, tags=[Tag.UNTAGGED]))
+        print(f"[✔] Detected a new meme\nURL: {meme.url}\n")
 
   print("🎉Sync completed!")
 

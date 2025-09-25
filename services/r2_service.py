@@ -1,5 +1,6 @@
 import aioboto3
 import os
+from domain.Metadata import Metadata
 
 s3_client = aioboto3.Session(
   aws_access_key_id=os.getenv("R2_ACCESS_KEY"),
@@ -18,7 +19,8 @@ async def list_files():
     files = []
     async for page in paginator.paginate(Bucket=os.getenv("R2_BUCKET")):
         for obj in page.get("Contents", []):
-            files.append(obj["Key"])
+            print(obj)
+            files.append(Metadata(key=obj["Key"], updated_at=obj["LastModified"], url=get_file_url(obj["Key"])))
 
     return files
 
