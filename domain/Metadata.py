@@ -16,18 +16,19 @@ class Tag(Enum):
 class Metadata:
   key: str = ""
   url: str = ""
-  created_at: datetime = field(default_factory=datetime.now(timezone.utc))
-  updated_at: datetime = field(default_factory=datetime.now(timezone.utc))
+  created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+  updated_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
   tags: List[Tag] = field(default_factory=list)
 
   @staticmethod
   def from_dict(data: dict):
+    tags = data.get("tags", [])
     return Metadata(
       key=data.get("key"),
       url=data.get("url", ""),
       created_at=data.get("created_at", datetime.now(timezone.utc)),
       updated_at=data.get("updated_at", datetime.now(timezone.utc)),
-      tags=data.get("tags", []),
+      tags=[Tag(tag) if isinstance(tag, str) else tag for tag in tags],
     )
 
   def to_dict(self):
@@ -36,7 +37,7 @@ class Metadata:
       "url": self.url,
       "created_at": self.created_at,
       "updated_at": self.updated_at,
-      "tags": self.tags,
+      "tags": [tag.value if isinstance(tag, Enum) else tag for tag in self.tags],
     }
 
   # def update_url(self, new_url: str):

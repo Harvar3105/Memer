@@ -1,32 +1,40 @@
 import firebase_admin
-from firebase_admin import credentials, firestore
+from firebase_admin import credentials, firestore_async
 from domain.Metadata import Metadata
+import traceback
 
 cred = credentials.Certificate("./firebaseKey.json")
 firebase_admin.initialize_app(cred)
 
-db = firestore.client()
-
-db_name = "video_memes"
-
-# def save_user(uid, data):
-#     db.collection("users").document(uid).set(data)
-
-# def get_user(uid):
-#     doc = db.collection("users").document(uid).get()
-#     return doc.to_dict() if doc.exists else None
+db_client = firestore_async.client()
+collection_name = "video_memes"
 
 async def exists(key:str):
-  return await db.collection(db_name).document(key).exists()
+  try:
+    snapshot = await db_client.collection(collection_name).document(key).get()
+    return snapshot.exists
+  except Exception as e:
+    print("Error in list_files:", e)
+    traceback.print_exc()
+    return False
 
 async def save_video_metadata(video: Metadata):
-  success = await db.collection(db_name).document(video.key).set(video)
-  return success
+  try:
+    return await db_client.collection(collection_name).document(video.key).set(video.to_dict())
+  except Exception as e:
+    print("Error in list_files:", e)
+    traceback.print_exc()
+    return None
 
 async def get_video_metadata(key: str) -> Metadata:
-  doc = db.collection(db_name).document(key).get()
+  try:
+    doc = await db_client.collection(collection_name).document(key).get()
 
-  if doc.exists :
-    return Metadata.from_dict(doc.to_dict())
-  else:
+    if doc.exists :
+      return Metadata.from_dict(doc.to_dict())
+    else:
+      return None
+  except Exception as e:
+    print("Error in list_files:", e)
+    traceback.print_exc()
     return None

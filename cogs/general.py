@@ -2,7 +2,8 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 import random
-from services.r2_service import list_files, get_file_url
+from services.r2_service import list_files, generate_presigned_url
+from utils.config import MEME_URL_EXPIRES_IN_SECONDS
 
 class GeneralCog(commands.Cog):
   MEMES_FOLDER = ""
@@ -32,16 +33,17 @@ class GeneralCog(commands.Cog):
 
   @commands.command(name="r_meme")
   async def meme(self, ctx: commands.Context):
-    memes = []
-    for key in await list_files():
-      memes.append(get_file_url(key))
+    memes_keys = []
+    for meme in await list_files():
+      memes_keys.append(meme.key)
 
-    if not memes or memes.count == 0:
+    if not memes_keys or memes_keys.count == 0:
       await ctx.send("No memes available 😢")
       return
 
-    meme = random.choice(memes)
-    await ctx.send(meme)
+    chosen_one = random.choice(memes_keys)
+    presigned_url = await generate_presigned_url(chosen_one, MEME_URL_EXPIRES_IN_SECONDS)
+    await ctx.send(presigned_url)
 
 async def setup(bot):
   await bot.add_cog(GeneralCog(bot))

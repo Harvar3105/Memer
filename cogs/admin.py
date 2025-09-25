@@ -2,7 +2,7 @@ from discord.ext import commands
 from utils.checks import is_admin
 from services.firebase_service import get_video_metadata, save_video_metadata
 from domain.Metadata import Metadata, Tag
-from utils.parsers import *
+from utils.parsers import parse_tags
 
 class AdminCog(commands.Cog):
   def __init__(self, bot):
