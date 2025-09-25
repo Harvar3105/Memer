@@ -13,17 +13,26 @@ s3_client = aioboto3.Session(
     )
 
 async def list_files():
-  async with s3_client as s3:
-    paginator = s3.get_paginator("list_objects_v2")
+  try:
+    async with s3_client as s3:
+      paginator = s3.get_paginator("list_objects_v2")
 
-    files = []
-    async for page in paginator.paginate(Bucket=os.getenv("R2_BUCKET")):
-        for obj in page.get("Contents", []):
-            print(obj)
-            files.append(Metadata(key=obj["Key"], updated_at=obj["LastModified"], url=get_file_url(obj["Key"])))
+      files: list[Metadata] = []
+      async for page in paginator.paginate(Bucket=os.getenv("R2_BUCKET")):
+          for obj in page.get("Contents", []):
+              print(obj)
+              print("\n")
+              print(obj["LastModified"], type(obj["LastModified"]))
+              files.append(Metadata(key=obj["Key"], updated_at=obj["LastModified"], url=get_file_url(obj["Key"])))
 
-    return files
+      print("returning files")
+      return files
+  except Exception as e:
+        print("Error in list_files:", e)
+        import traceback
+        traceback.print_exc()
+        return []
 
-def get_file_url(file_name):
+def get_file_url(file_name: str) -> str:
   return f"{os.getenv('R2_ENDPOINT')}/{os.getenv('R2_BUCKET')}/{file_name}"
 
