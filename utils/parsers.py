@@ -1,6 +1,6 @@
 from domain.Metadata import Tag
 
-def parse_tags(tags: str) -> list[Tag]:
+def parse_tags_from_st(tags: str) -> list[Tag]:
   result = []
   for t in tags.split(","):
     clean = t.strip().lower()

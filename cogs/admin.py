@@ -1,8 +1,8 @@
 from discord.ext import commands
 from utils.checks import is_admin
-from services.firebase_service import get_video_metadata, save_video_metadata
-from domain.Metadata import Metadata, Tag
-from utils.parsers import parse_tags
+from repos.firebase_service import get_video_metadata, save_video_metadata
+from domain.Metadata import Metadata
+from utils.parsers import parse_tags_from_st
 
 class AdminCog(commands.Cog):
   def __init__(self, bot):
@@ -16,17 +16,17 @@ class AdminCog(commands.Cog):
 
   @commands.command(name="add_tag")
   @is_admin()
-  async def add_tag(self, meme_url: str, tags: str , ctx:commands.Context):
+  async def add_tag(self, meme_key: str, tags: str , ctx:commands.Context):
     if not isinstance(tags, str):
       ctx.send("Sorry, but tags are in wrong type. Use as a delimeter ', '!")
       return
     
-    response: Metadata = await get_video_metadata(meme_url)
+    response: Metadata = await get_video_metadata(meme_key)
     if response is None:
       ctx.send("Sorry, no such meme were found!")
       return
     
-    taglist = parse_tags(tags)
+    taglist = parse_tags_from_st(tags)
     response.tags.extend(taglist)
     
     await save_video_metadata(response)

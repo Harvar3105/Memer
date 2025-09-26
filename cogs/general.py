@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 import random
-from services.r2_service import list_files, generate_presigned_url
+from repos.r2_service import list_files, generate_presigned_url
 from utils.config import MEME_URL_EXPIRES_IN_SECONDS
 
 class GeneralCog(commands.Cog):

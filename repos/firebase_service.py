@@ -9,6 +9,17 @@ firebase_admin.initialize_app(cred)
 db_client = firestore_async.client()
 collection_name = "video_memes"
 
+async def test_connection():
+  try:
+    # Attempt to fetch a document to test the connection
+    await db_client.collection(collection_name).limit(1).get()
+    return True
+  except Exception as e:
+    print("Error in test_connection:", e)
+    import traceback
+    traceback.print_exc()
+    return False
+
 async def exists(key:str):
   try:
     snapshot = await db_client.collection(collection_name).document(key).get()
