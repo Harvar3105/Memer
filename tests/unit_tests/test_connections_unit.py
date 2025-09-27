@@ -30,11 +30,8 @@ async def test_firestore_connection_mocked():
   mock_doc.get.return_value.exists = True
   mock_doc.get.return_value.to_dict.return_value = {"ping": "pong"}
 
-  async def mock_get():
-    yield mock_doc
-
   mock_document = AsyncMock()
-  mock_document.get.side_effect = mock_get
+  mock_document.get.return_value = [mock_doc]
 
   mock_collection = AsyncMock()
   mock_collection.document.return_value = mock_document
@@ -55,11 +52,8 @@ async def test_all_connections_mocked():
   mock_doc.get.return_value.exists = True
   mock_doc.get.return_value.to_dict.return_value = {"ping": "pong"}
 
-  async def mock_get():
-    yield mock_doc
-
   mock_document = AsyncMock()
-  mock_document.get.side_effect = mock_get
+  mock_document.get.return_value = [mock_doc]
 
   mock_collection = AsyncMock()
   mock_collection.document.return_value = mock_document
