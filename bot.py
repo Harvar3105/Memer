@@ -20,7 +20,7 @@ async def on_ready():
     await sync_manually_added_memes()
   else:
     print("[❌] Some connections are unhealthy. Please check the logs.")
-    bot.close()
+    await bot.close()
 
 
 async def main():
