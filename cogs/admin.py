@@ -11,7 +11,7 @@ class AdminCog(commands.Cog):
   @commands.command(name="shutdown")
   @is_admin()
   async def shutdown(self, ctx: commands.Context):
-    await ctx.send("Shutting down.")
+    await ctx.send("Shutting down 📛")
     await self.bot.close()
 
   @commands.command(name="add_tag")
