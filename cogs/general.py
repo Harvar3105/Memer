@@ -24,14 +24,5 @@ class GeneralCog(commands.Cog):
     presigned_url = await generate_presigned_url(chosen_one.key, MEME_URL_EXPIRES_IN_SECONDS)
     await send_masked(ctx=ctx, presigned_url=presigned_url)
 
-  @commands.command(name="help")
-  async def help(self, ctx: commands.Context):
-    await ctx.send("""
-    Prefix is '!' or '/'
-    Commands:
-    help    -   show list of available commands
-    ping    -   test if bot currently listening
-    """)
-
 async def setup(bot):
   await bot.add_cog(GeneralCog(bot))

@@ -33,11 +33,11 @@ class AdminCog(commands.Cog):
     await save_video_metadata(response)
     await ctx.send("✅Tag added!")
 
-  @commands.command(name="List_tags")
-  @is_admin
+  @commands.command(name="list_tags")
+  @is_admin()
   async def list_tags(self, ctx: commands.Context):
     tag_dict = {tag.name: tag.value for tag in Tag}
-    tag_str = ",\n".join(f"{k}={v}" for k, v in tag_dict.items())
+    tag_str = ",\n".join(f"{k}  =  {v}" for k, v in tag_dict.items())
     await ctx.send(tag_str)
 
 
