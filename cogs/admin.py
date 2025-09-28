@@ -9,7 +9,7 @@ class AdminCog(commands.Cog):
   def __init__(self, bot):
     self.bot = bot
 
-  @commands.command(name="shutdown")
+  @commands.command(name="shutdown", description="Shut down bot.")
   @is_admin()
   async def shutdown(self, ctx: commands.Context):
     await ctx.send("Shutting down 📛")
@@ -33,7 +33,7 @@ class AdminCog(commands.Cog):
     await save_video_metadata(response)
     await ctx.send("✅Tag added!")
 
-  @commands.command(name="list_tags")
+  @commands.command(name="list_tags", description="List all available tags.")
   @is_admin()
   async def list_tags(self, ctx: commands.Context):
     tag_dict = {tag.name: tag.value for tag in Tag}

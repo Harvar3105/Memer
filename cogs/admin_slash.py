@@ -9,13 +9,13 @@ class AdminCogSlash(commands.Cog):
   def __init__(self, bot):
     self.bot = bot
 
-  @app_commands.command(name="shutdown")
+  @app_commands.command(name="shutdown", description="Shut down bot.")
   @is_admin()
   async def shutdown(self, interaction: discord.Interaction):
     await interaction.response.send_message("Shutting down 📛")
     await self.bot.close()
 
-  @app_commands.command(name="list_tags")
+  @app_commands.command(name="list_tags", description="List all available tags.")
   @is_admin()
   async def list_tags(self, interaction: discord.Interaction):
     tag_dict = {tag.name: tag.value for tag in Tag}
