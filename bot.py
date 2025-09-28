@@ -14,13 +14,9 @@ bot = commands.Bot(command_prefix=PREFIX, intents=intents)
 async def on_ready():
   await bot.tree.sync();
   print(f"[✅] Logged in as {bot.user}\nStarting db analysis and sync")
+  
+  await sync_manually_added_memes()
 
-  if await test_all_connections():
-    print("[✅] All connections are healthy")
-    await sync_manually_added_memes()
-  else:
-    print("[❌] Some connections are unhealthy. Please check the logs.")
-    await bot.close()
 
 
 async def main():
