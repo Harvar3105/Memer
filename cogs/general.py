@@ -2,7 +2,7 @@ from discord.ext import commands
 import random
 from repos.r2_service import list_files, generate_presigned_url
 from utils.config import MEME_URL_EXPIRES_IN_SECONDS
-from utils.senders import send_embed, send_masked
+from utils.senders import send_masked
 
 class GeneralCog(commands.Cog):
   def __init__(self, bot):

@@ -17,6 +17,18 @@ async def on_ready():
   
   await sync_manually_added_memes()
 
+@bot.event
+async def on_message(message):
+  if message.author == bot.user:
+      return
+  
+  if message.reference and isinstance(message.reference.resolved, discord.Message):
+      replied_message = message.reference.resolved
+
+      if replied_message.author == bot.user:
+          await message.channel.send(f"{message.author.mention}, you replied to my message!")
+
+  await bot.process_commands(message)
 
 
 async def main():
