@@ -31,12 +31,15 @@ async def on_message(message):
   await bot.process_commands(message)
 
 
-async def main():
+async def start_bot():
   async with bot:
     for filename in os.listdir("./cogs"):
       if filename.endswith(".py") and filename != "__init__.py":
         await bot.load_extension(f"cogs.{filename[:-3]}")
     await bot.start(DISCORD_BOT_TOKEN)
 
-asyncio.run(main())
+def start_handler():
+   asyncio.run(start_bot())
+
+# asyncio.run(main())
 
