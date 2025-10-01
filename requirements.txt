@@ -3,3 +3,5 @@ firebase-admin
 aioboto3
 python-dotenv
 pytest
+pytest-asyncio
+Flask
