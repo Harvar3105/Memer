@@ -14,13 +14,21 @@ bot = commands.Bot(command_prefix=PREFIX, intents=intents)
 async def on_ready():
   await bot.tree.sync();
   print(f"[✅] Logged in as {bot.user}\nStarting db analysis and sync")
+  
+  await sync_manually_added_memes()
 
-  if await test_all_connections():
-    print("[✅] All connections are healthy")
-    await sync_manually_added_memes()
-  else:
-    print("[❌] Some connections are unhealthy. Please check the logs.")
-    bot.close()
+@bot.event
+async def on_message(message):
+  if message.author == bot.user:
+      return
+  
+  if message.reference and isinstance(message.reference.resolved, discord.Message):
+      replied_message = message.reference.resolved
+
+      if replied_message.author == bot.user:
+          await message.channel.send(f"{message.author.mention}, you replied to my message!")
+
+  await bot.process_commands(message)
 
 
 async def main():
