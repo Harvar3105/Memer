@@ -2,6 +2,4 @@ discord.py
 firebase-admin
 aioboto3
 python-dotenv
-random
-traceback
 pytest
