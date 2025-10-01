@@ -14,7 +14,7 @@ async def test_connection():
     service_name="s3",
     endpoint_url=R2_ENDPOINT
     ) as s3:
-      await s3.list_buckets()
+      await s3.head_bucket(Bucket=R2_BUCKET)
       return True
   except Exception as e:
     print("Error in test_connection:", e)
