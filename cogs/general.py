@@ -22,7 +22,7 @@ class GeneralCog(commands.Cog):
 
     chosen_one = random.choice(memes)
     presigned_url = await generate_presigned_url(chosen_one.key, MEME_URL_EXPIRES_IN_SECONDS)
-    await send_masked(source=ctx, presigned_url=presigned_url)
+    await send_masked(source=ctx, presigned_url=presigned_url, mask=f"**MEME**: {chosen_one.key}")
 
 async def setup(bot):
   await bot.add_cog(GeneralCog(bot))

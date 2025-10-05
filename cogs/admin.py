@@ -1,3 +1,4 @@
+import re
 from discord.ext import commands
 from utils.checks import is_admin, is_reply_to_bot
 from repos.firebase_service import get_video_metadata, save_video_metadata
@@ -36,13 +37,21 @@ class AdminCog(commands.Cog):
   @commands.command(name="add_tags_reply")
   @is_admin()
   @is_reply_to_bot()
-  async def add_tags_reply(self, ctx:commands.Context, replied_message_content: str, tags: str):
-    parts = tags.split()
+  async def add_tags_reply(self, ctx:commands.Context, tags: str):
+    ref = ctx.message.reference
+    replied_message = ref.resolved
+    replied_message_content = replied_message.content
+
+    parts = tags.split(", ")
     if len(parts) < 1:
       await ctx.send("Sorry, I couldn't find the meme key in the replied message.")
       return
 
-    meme_key = replied_message_content # Later Get key from masked url
+    match = re.search(r'\b([\w.-]+\.[a-zA-Z0-9]{3,4})\b', replied_message_content)
+    if not match:
+      await ctx.send("Sorry, I couldn't find the meme key in the replied message.")
+      return
+    meme_key = match.group(1)
 
     if not isinstance(tags, str):
       await ctx.send("Sorry, but tags are in wrong type. Use as a delimeter ', '!")
@@ -54,7 +63,7 @@ class AdminCog(commands.Cog):
       return
     
     taglist = parse_tags_from_st(tags)
-    response.tags.extend(taglist)
+    response.add_tags(taglist)
     
     await save_video_metadata(response)
     await ctx.send("✅Tag added!")
