@@ -49,3 +49,16 @@ async def get_video_metadata(key: str) -> Metadata:
     print("Error in list_files:", e)
     traceback.print_exc()
     return None
+
+async def get_all_video_metadata() -> list:
+  try:
+    docs = await db_client.collection(collection_name).stream()
+    return [Metadata.from_dict(doc.to_dict()) for doc in docs]
+  except Exception as e:
+    print("Error in list_files:", e)
+    traceback.print_exc()
+    return []
+
+async def get_all_video_metadata_by_tag(tag: str) -> list:
+    all_objects = await get_all_video_metadata()
+    return [obj for obj in all_objects if tag in [t.name if hasattr(t, 'name') else t for t in obj.tags]]

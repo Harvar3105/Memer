@@ -19,7 +19,7 @@ async def send_embed(ctx: commands.Context, presigned_url: str, meme: Metadata, 
     traceback.print_exc()
 
 async def send_masked(source: commands.Context | discord.Interaction, presigned_url: str, mask: str = "MEME"):
-  message = content=f"[{mask}\n{parse_secons_to_text(MEME_URL_EXPIRES_IN_SECONDS)}]({presigned_url})"
+  message = f"[{mask}\n{parse_secons_to_text(MEME_URL_EXPIRES_IN_SECONDS)}]({presigned_url})"
   if isinstance(source, discord.Interaction) :
     await source.response.send_message(message)
   else:

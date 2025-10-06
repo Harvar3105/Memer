@@ -18,3 +18,11 @@ async def sync_manually_added_memes():
       print(f"[✔] Detected a new meme\nURL: {meme.url}")
 
   print(f"\n++++++++++\n🎉Sync completed!\nDetected {manually_added_count} new manually added memes!\n++++++++++\n")
+
+async def list_memes_by_tags(tags: list[str]):
+  matched_memes = []
+  all_memes = await list_files()
+  for meme in all_memes:
+    if any(tag in meme.tags for tag in tags):
+      matched_memes.append(meme)
+  return matched_memes
