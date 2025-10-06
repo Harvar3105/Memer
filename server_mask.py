@@ -11,9 +11,10 @@ def home():
 	return "Bot is running!\nTry pinging it with ping command ore check its slash commands!"
 
 def run_flask():
-	if SERVER_MASK_PORT is None:
-		SERVER_MASK_PORT = '5000'
-	app.run(host="0.0.0.0", port=int(SERVER_MASK_PORT))
+	port = SERVER_MASK_PORT
+	if port is None:
+		port = '5000'
+	app.run(host="0.0.0.0", port=int(port))
 
 if __name__ == "__main__":
 	threading.Thread(target=run_flask).start()
