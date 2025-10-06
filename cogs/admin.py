@@ -3,7 +3,7 @@ from discord.ext import commands
 from utils.checks import is_admin, is_reply_to_bot
 from repos.firebase_service import get_video_metadata, save_video_metadata
 from domain.Metadata import Metadata
-from utils.parsers import parse_tags_from_st
+from utils.parsers import parse_tags_from_str
 from domain.Metadata import Tag
 
 class AdminCog(commands.Cog):
@@ -28,7 +28,7 @@ class AdminCog(commands.Cog):
       await ctx.send("Sorry, no such meme were found!")
       return
     
-    taglist = parse_tags_from_st(tags)
+    taglist = parse_tags_from_str(tags)
     response.tags.extend(taglist)
     
     await save_video_metadata(response)
@@ -62,7 +62,7 @@ class AdminCog(commands.Cog):
       await ctx.send("Sorry, no such meme were found!")
       return
     
-    taglist = parse_tags_from_st(tags)
+    taglist = parse_tags_from_str(tags)
     response.add_tags(taglist)
     
     await save_video_metadata(response)

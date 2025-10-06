@@ -2,7 +2,9 @@ import asyncio
 from discord.ext import commands
 import random
 from repos.r2_service import list_files, generate_presigned_url
+from services.memer_service import list_memes_by_tags
 from utils.config import MEME_URL_EXPIRES_IN_SECONDS
+from utils.parsers import parse_tags_from_str
 from utils.senders import send_masked
 
 class GeneralCog(commands.Cog):
@@ -14,8 +16,13 @@ class GeneralCog(commands.Cog):
     await ctx.send("Pong! 🏓")
 
   @commands.command(name="r_meme", description="Get random meme.")
-  async def meme(self, ctx: commands.Context):
-    memes = await list_files()
+  async def meme(self, ctx: commands.Context, tags: str = None):
+    tags_list = parse_tags_from_str(tags) if tags else None
+
+    if tags_list:
+      memes = await list_memes_by_tags(tags_list)
+    else:
+      memes = await list_files()
 
     if not memes or memes.count == 0:
       await ctx.send("No memes available 😢")
