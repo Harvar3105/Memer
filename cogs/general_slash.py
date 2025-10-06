@@ -26,7 +26,7 @@ class GeneralCogSlash(commands.Cog):
 
     chosen_one = random.choice(memes)
     presigned_url = await generate_presigned_url(chosen_one.key, MEME_URL_EXPIRES_IN_SECONDS)
-    await send_masked(source=interaction, presigned_url=presigned_url)
+    await send_masked(source=interaction, presigned_url=presigned_url, mask=f"**MEME**: {chosen_one.key}")
   
   @app_commands.command(name="react_clown", description="Set clown emoji to specified user messages. Max: 100 messages.")
   async def react_clown(self, ctx: commands.Context, user: str, amount: int = 1, max_timeout: int = 300):
